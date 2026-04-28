@@ -1,0 +1,106 @@
+# Навчальний проєкт: донавчання BERT для класифікації тексту
+
+Цей репозиторій містить робочий проєкт для дисципліни **«Основи обробки природної мови»**.
+
+## Мета роботи
+
+- обрати варіант BERT-моделі;
+- донавчити модель на задачі класифікації текстів;
+- перевірити якість на тестовій вибірці;
+- запустити застосунок та виконати інференс на довільному тексті.
+
+## Обрані інструменти
+
+- **Базова модель:** `bert-base-uncased` (варіант BERT);
+- **Додатковий експеримент:** `distilbert-base-uncased`;
+- **Датасет:** `ag_news` (4 класи новин: World, Sports, Business, Sci/Tech);
+- **Фреймворки:** `transformers`, `datasets`, `evaluate`, `torch`.
+
+## Структура проєкту
+
+- `src/nlp_bert_classifier/pipeline.py` — логіка завантаження даних, токенізації, донавчання та оцінювання;
+- `src/nlp_bert_classifier/cli.py` — CLI-застосунок (команди `train` і `predict`);
+- `tests/` — тести (`pytest`);
+- `reports/run_report.md` — звіт про реальний запуск і результати.
+
+## Вимоги
+
+- Python 3.10+;
+- доступ до інтернету для завантаження моделі та датасету з Hugging Face.
+
+## Встановлення
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+pip install -e .
+```
+
+## Запуск тестів
+
+```bash
+pytest -q
+```
+
+## Запуск навчання (донавчання BERT)
+
+Швидкий навчальний прогін (рекомендовано для лабораторної):
+
+```bash
+python -m nlp_bert_classifier.cli train \
+  --train-samples 200 \
+  --test-samples 80 \
+  --epochs 1 \
+  --batch-size 8
+```
+
+Артефакти буде збережено до `artifacts/bert-ag-news/`:
+
+- `model/` — модель і токенайзер;
+- `metrics.json` — конфігурація запуску та метрики.
+
+## Другий експеримент (DistilBERT)
+
+Для порівняння можна виконати:
+
+```bash
+python -m nlp_bert_classifier.cli train \
+  --model-name distilbert-base-uncased \
+  --output-dir artifacts/distilbert-ag-news \
+  --train-samples 200 \
+  --test-samples 80 \
+  --epochs 1 \
+  --batch-size 8
+```
+
+Артефакти другого експерименту збережуться у `artifacts/distilbert-ag-news/`.
+
+## Запуск класифікації тексту
+
+Після навчання виконайте:
+
+```bash
+python -m nlp_bert_classifier.cli predict \
+  --model-dir artifacts/bert-ag-news/model \
+  --text "Apple releases a new AI chip for data centers"
+```
+
+Приклад відповіді:
+
+```json
+{
+  "label": "Sci/Tech",
+  "confidence": 0.73
+}
+```
+
+## Критерій готовності
+
+Проєкт вважається готовим, якщо:
+
+- тести проходять успішно (`pytest`);
+- команда `train` завершується без помилок;
+- команда `predict` повертає клас і впевненість;
+- звіт `reports/run_report.md` містить фактичні результати запуску.

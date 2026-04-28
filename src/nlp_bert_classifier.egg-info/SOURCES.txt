@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+src/nlp_bert_classifier/__init__.py
+src/nlp_bert_classifier/cli.py
+src/nlp_bert_classifier/pipeline.py
+src/nlp_bert_classifier.egg-info/PKG-INFO
+src/nlp_bert_classifier.egg-info/SOURCES.txt
+src/nlp_bert_classifier.egg-info/dependency_links.txt
+src/nlp_bert_classifier.egg-info/top_level.txt
+tests/test_cli.py
+tests/test_config.py
+tests/test_metrics.py
